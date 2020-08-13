@@ -13,7 +13,6 @@ for i in range(N):
     else:
         break
 
-
 for i in range(M):
     if Bi + B[i] <= K:
         Bi += B[i]
