@@ -1,33 +1,20 @@
 N,M,K = map(int,input().split())
 A = list(map(int,input().split()))
 B = list(map(int,input().split()))
-
 SA = [0]
 SB = [0]
 
-tmp_A, tmp_B = 0 ,0
-
 for i in range(N):
-    tmp_A += A[i]
-    if tmp_A <= K:
-        SA.append(tmp_A)
-    else:
-        break
-
+    SA.append(A[i]+SA[i])
 for i in range(M):
-    tmp_B += B[i]
-    if tmp_B <= K:
-        SB.append(tmp_B)
-    else:
-        break
+    SB.append(B[i]+SB[i])
+ans, j = 0, M
 
-ans = 0
-cursol_B = len(SB) - 1
-
-for i in range(len(SA)):
-    while SA[i] + SB[cursol_B] > K:
-        cursol_B -= 1
-        
-    ans = max(ans, i + cursol_B)
+for i in range(N+1):
+    if SA[i] > K:
+        break 
+    while SA[i] + SB[j] > K:
+        j -= 1
+    ans = max(ans, i+j)
 
 print(ans)
