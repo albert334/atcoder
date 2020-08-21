@@ -1,53 +1,15 @@
-X, K, D = map(int,input().split())
+x, k, d = map(int,input().split())
 
-if X == 0:
-    if (K % 2 == 0):
-        print(0)
-    else:
-        print(D)
+cur = abs(x)
+rem = k
 
-    exit()
+cnt = min(cur // d, k)
+cur -= d * cnt
+rem -= cnt
 
-if X > 0:
-    if X % D == 0:
-        a = X // D
-    else:
-        a = X // D + 1
+if rem > 0:
+    if rem % 2 == 1:
+        cur -= d
 
-    if a > K:
-        print(abs(X-K*D))
-        exit()
-    
-    if K % 2 == 0:
-        if a % 2 == 0:
-            print(abs(X-a*D))
-        else:
-            print(abs(X-a*D+D))
-    else:
-        if a % 2 == 0:
-            print(abs(X-a*D+D))
-        else:
-            print(abs(X-a*D))
-        exit()
-
-if X < 0:
-    if X % D == 0:
-        a = -1 * X // D
-    else:
-        a = -1 * X // D + 1
-
-    if a > K:
-        print(abs(X+K*D))
-        exit()
-    
-    if K % 2 == 0:
-        if a % 2 == 0:
-            print(abs(X+a*D))
-        else:
-            print(abs(X+a*D-D))
-    else:
-        if a % 2 == 0:
-            print(abs(X+a*D-D))
-        else:
-            print(abs(X+a*D))
-        exit()
+ans = abs(cur)
+print(ans)
