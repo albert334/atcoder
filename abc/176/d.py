@@ -19,21 +19,42 @@ num_step[Ch - 1][Cw - 1] = 0
 # スタート地点を定義
 queue = [(Ch - 1, Cw - 1)]
 
+# 幅優先探索
 while not queue == []:
     h = queue.pop(0) # here
     next_  = [
-        (h[0] + 1, h[1]),
-        (h[0] - 1, h[1]),
-        (h[0], h[1] + 1),
-        (h[0], h[1] - 1),]
+        (h[0] + 1, h[1], 0),
+        (h[0] - 1, h[1], 0),
+        (h[0], h[1] + 1, 0),
+        (h[0], h[1] - 1, 0),]
 
     for n in next_:
         if steppable(n[0], n[1]) and num_step[n[0]][n[1]] == INF:
             queue.append(n)
-            num_step[n[0]][n[1]] = num_step[h[0]][h[1]] + 1
+            num_step[n[0]][n[1]] = 0
 
-ans = num_step[Dh - 1][Dw - 1]
-if ans == INF:
-    print(-1)
-else:
+if num_step[Dh - 1][Dw - 1] == 0:
     print(0)
+    exit()
+
+# マジックを検討
+# スタート地点を定義
+queue = [(Ch - 1, Cw - 1)]
+magic_num = INF // 2 
+
+while True:
+    # 幅優先探索
+    while not queue == []:
+        h = queue.pop(0) # here
+        next_  = [
+            (h[0] + 1, h[1], 0),
+            (h[0] - 1, h[1], 0),
+            (h[0], h[1] + 1, 0),
+            (h[0], h[1] - 1, 0),]
+
+        for n in next_:
+            if steppable(n[0], n[1]) and num_step[n[0]][n[1]] == magic_num:
+                queue.append(n)
+                num_step[n[0]][n[1]] = 0
+    
+    if num_step[Dh - 1][Dw - 1] == magic_num:
