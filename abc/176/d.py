@@ -5,56 +5,59 @@ S = [list(input()) for _ in range(H)]
 
 INF = H * W
 
-def steppable(h,w):
-    if not (h in range(H)) or not (w in range(W)):
-        return False
-    if S[h][w] == '#':
-        return False
-    else:
-        return True
+dx = [1, 0, -1, 0]
+dy = [0, -1, 0, 1]
+
+# def steppable(h,w):
+#     if not (h in range(H)) or not (w in range(W)):
+#         return False
+#     if S[h][w] == '#':
+#         return False
+#     else:
+#         return True
 
 num_step = [[INF for w in range(W)] for h in range(H)]
 num_step[Ch - 1][Cw - 1] = 0
 
 # スタート地点を定義
 queue = [(Ch - 1, Cw - 1)]
+num_warp = 0
 
 # 幅優先探索
 while not queue == []:
-    h = queue.pop(0) # here
-    next_  = [
-        (h[0] + 1, h[1], 0),
-        (h[0] - 1, h[1], 0),
-        (h[0], h[1] + 1, 0),
-        (h[0], h[1] - 1, 0),]
-
-    for n in next_:
-        if steppable(n[0], n[1]) and num_step[n[0]][n[1]] == INF:
-            queue.append(n)
-            num_step[n[0]][n[1]] = 0
-
-if num_step[Dh - 1][Dw - 1] == 0:
-    print(0)
-    exit()
-
-# マジックを検討
-# スタート地点を定義
-queue = [(Ch - 1, Cw - 1)]
-magic_num = INF // 2 
-
-while True:
-    # 幅優先探索
+    magic_tiles = []
     while not queue == []:
-        h = queue.pop(0) # here
-        next_  = [
-            (h[0] + 1, h[1], 0),
-            (h[0] - 1, h[1], 0),
-            (h[0], h[1] + 1, 0),
-            (h[0], h[1] - 1, 0),]
+        h = queue.pop(0) # here 
+        if h[0] == Dh - 1 and h[1] == Dw - 1:
+            print(num_warp)
+            exit()
+        # next_  = [
+        #     (h[0] + 1, h[1], 0),
+        #     (h[0] - 1, h[1], 0),
+        #     (h[0], h[1] + 1, 0),
+        #     (h[0], h[1] - 1, 0),]
+        for i in range(4):
+            if 0 <= h[0]+dy[i] < H and 0 <= h[1]+dx[i] < W and S[h[0]+dy[i]][h[1]+dx[i]] == '.' \
+                 and num_step[h[0]+dy[i]][h[1]+dx[i]] > num_warp:
+                queue.append((h[0]+dy[i], h[1]+dx[i]))
+                num_step[h[0]+dy[i]][h[1]+dx[i]] = num_warp
 
-        for n in next_:
-            if steppable(n[0], n[1]) and num_step[n[0]][n[1]] == magic_num:
-                queue.append(n)
-                num_step[n[0]][n[1]] = 0
-    
-    if num_step[Dh - 1][Dw - 1] == magic_num:
+        # 魔法を使っていける場所を検討
+        mx = [-2, -1 , 0, 1, 2]
+        my = [-2, -1 , 0, 1, 2]
+
+        for x in mx:
+            for y in my:
+                 if 0 <= h[0] + y < H and 0 <= h[1] + x < W and S[h[0] + y][h[1] + x] == '.' \
+                     and num_step[h[0] + y][h[1] + x] == INF:
+                    magic_tiles.append((h[0] + y, h[1] + x))
+
+    num_warp += 1
+
+    # キューの追加
+    for magic in magic_tiles:
+        if num_step[magic[0]][magic[1]] == INF:
+            num_step[magic[0]][magic[1]] == num_warp
+            queue.append((magic[0], magic[1]))
+
+print(-1)
