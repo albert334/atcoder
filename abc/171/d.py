@@ -4,9 +4,6 @@ Q = int(input())
 BCs = [list(map(int,input().split())) for _ in range(Q)]
 max_A = max(A)
 
-# Aの値について数列を作る
-# A_num = [A.count(i) for i in range(10 ** 5 + 1)]
-
 A_num = [0 for i in range(10 ** 5 + 1)]
 for a in A:
     A_num[a] += 1
